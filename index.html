@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Francisco Acosta — Physics PhD, UCSB</title>
+<meta name="description" content="Francisco Acosta is a physics PhD candidate at UC Santa Barbara studying the geometry, symmetry, and dynamics of representations learned by neural networks.">
+<meta name="keywords" content="Francisco Acosta, computational neuroscience, neural manifolds, Riemannian geometry, differential geometry, UCSB, machine learning, NeurIPS, grid cells, recurrent neural networks">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Francisco Acosta — Physics PhD, UCSB">
+<meta property="og:description" content="Studying the geometry, symmetry, and dynamics of representations learned by neural networks.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://franciscoeacosta.github.io">
+
+<!-- JSON-LD Structured Data for AI/Search -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Francisco Acosta",
+  "givenName": "Francisco",
+  "familyName": "Acosta",
+  "jobTitle": "PhD Candidate in Physics",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "University of California, Santa Barbara",
+    "department": "Department of Physics"
+  },
+  "alumniOf": {
+    "@type": "Organization",
+    "name": "Massachusetts Institute of Technology"
+  },
+  "url": "https://franciscoeacosta.github.io",
+  "sameAs": [
+    "https://github.com/franciscoeacosta",
+    "https://x.com/hopfbifurcator",
+    "https://www.linkedin.com/in/francisco-acosta-a09a91227/",
+    "https://bsky.app/profile/franciscoacosta.bsky.social"
+  ],
+  "knowsAbout": [
+    "Computational Neuroscience",
+    "Neural Manifolds",
+    "Riemannian Geometry",
+    "Recurrent Neural Networks",
+    "Grid Cells",
+    "Group Theory in Neural Networks",
+    "Differential Geometry",
+    "Representation Learning"
+  ],
+  "worksFor": [
+    {
+      "@type": "Organization",
+      "name": "Geometric Intelligence Lab, UCSB"
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN SYSTEM
+   Warm paper, one restrained red accent.
+   ============================================ */
+:root {
+  --bg: #fbfaf6;
+  --surface: #fffefb;
+  --surface-muted: #f5f1e8;
+  --text: #241f1b;
+  --text-secondary: #62584e;
+  --text-tertiary: #8a7f72;
+  --accent: #b63a1a;
+  --accent-hover: #b63a1a;
+  --accent-soft: rgba(182,58,26,0.12);
+  --rule: #ded6c8;
+  --card-border: #e8dfd2;
+  --max-w: 760px;
+  --max-w-wide: 980px;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16.5px;
+  line-height: 1.68;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(251,250,246,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+nav {
+  max-width: var(--max-w-wide);
+  margin: 0 auto;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+nav .nav-name {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--text);
+  text-decoration: none;
+  margin-right: auto;
+  letter-spacing: -0.01em;
+}
+nav a.nav-link {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+nav a.nav-link:hover { color: var(--accent); }
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  max-width: var(--max-w-wide);
+  margin: 0 auto;
+  padding: 82px 32px 70px;
+  display: grid;
+  grid-template-columns: 176px 1fr;
+  gap: 52px;
+  align-items: start;
+}
+.hero-photo {
+  width: 176px;
+  height: 212px;
+  border-radius: 4px;
+  object-fit: cover;
+  object-position: 50% 18%;
+  background: var(--surface-muted);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 54px;
+  color: var(--accent);
+  font-family: 'Source Serif 4', serif;
+}
+.hero-content h1 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.hero-tagline {
+  margin-top: 16px;
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 600px;
+}
+.hero-tagline a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.2s;
+}
+.hero-tagline a:hover { border-bottom-color: var(--accent); }
+
+.hero-affil {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.hero-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.hero-links a {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.hero-links a:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+}
+
+/* ============================================
+   SECTIONS — shared layout
+   ============================================ */
+.section-impressionist {
+  position: relative;
+}
+.section-impressionist > * { position: relative; z-index: 1; }
+section {
+  padding: 64px 32px;
+  border-top: 1px solid var(--rule);
+}
+.section-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+section h2 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 29px;
+  letter-spacing: -0.01em;
+}
+.section-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.section-line::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.section-line::before {
+  content: '';
+  width: 18px;
+  height: 3px;
+  background: var(--accent);
+}
+section p {
+  color: var(--text-secondary);
+  max-width: 620px;
+}
+section p + p { margin-top: 14px; }
+
+/* ============================================
+   PUBLICATIONS
+   ============================================ */
+.pub-category {
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 36px;
+  margin-bottom: 16px;
+}
+.pub-category:first-of-type { margin-top: 0; }
+
+.pub {
+  background: transparent;
+  border-top: 1px solid var(--rule);
+  padding: 18px 0;
+  margin-bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+.pub:hover {
+  border-top-color: var(--accent-soft);
+}
+.pub-title {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--text);
+}
+.pub-authors {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.pub-authors strong {
+  font-weight: 600;
+  color: var(--text);
+}
+.pub-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pub-venue {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.pub-links a {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-left: 14px;
+  transition: color 0.2s;
+}
+.pub-links a:hover { color: var(--accent); }
+.pub-links a::before { content: '-> '; opacity: 0.55; }
+
+/* Image placeholder for paper thumbnails */
+.pub-with-img {
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.pub-thumb {
+  width: 120px;
+  height: 80px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  border: 1px solid var(--rule);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   SOFTWARE
+   ============================================ */
+.sw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.sw-card {
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+.sw-card:hover {
+  border-color: var(--accent);
+}
+.sw-card h3 {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.sw-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.sw-card a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+}
+.sw-card a:hover { text-decoration: underline; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer {
+  max-width: var(--max-w-wide);
+  margin: 0 auto;
+  padding: 32px 32px 48px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+footer a:hover { color: var(--accent); }
+
+/* ============================================
+   ACCENT DIVIDER
+   ============================================ */
+.ylrd-divider {
+  height: 4px;
+  max-width: var(--max-w-wide);
+  margin: 0 auto;
+  background: var(--accent);
+  border: none;
+}
+
+/* ============================================
+   STATIC RENDERING
+   ============================================ */
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 700px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 48px 20px 40px;
+    gap: 24px;
+  }
+  .hero-photo { width: 136px; height: 164px; font-size: 44px; }
+  .hero-content h1 { font-size: 34px; }
+  section { padding: 48px 20px; }
+  nav { padding: 14px 20px; gap: 10px 16px; }
+  nav .nav-name { flex-basis: 100%; }
+  .pub-with-img { grid-template-columns: 1fr; }
+  .pub-thumb { width: 100%; height: 120px; }
+  .sw-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<div class="nav-wrap">
+  <nav>
+    <a class="nav-name" href="#">F. Acosta</a>
+    <a class="nav-link" href="#about">About</a>
+    <a class="nav-link" href="#publications">Publications</a>
+    <a class="nav-link" href="#software">Software</a>
+  </nav>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero fade-in">
+  <img src="assets/headshot.jpg" alt="Francisco Acosta" class="hero-photo">
+  <div class="hero-content">
+    <h1>Francisco Acosta</h1>
+    <p class="hero-tagline">
+      Physicist studying the <em>geometry, symmetry, and dynamics</em> of representations
+      learned by neural networks — at the
+      <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a>, UC Santa Barbara.
+    </p>
+    <p class="hero-affil">
+      MIT '21 · PhD Candidate in Physics @ UC Santa Barbara · Advisor: <a href="https://gi.ece.ucsb.edu" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
+    </p>
+    <div class="hero-links">
+      <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+      <a href="https://github.com/franciscoeacosta" target="_blank">GitHub</a>
+      <a href="https://x.com/hopfbifurcator" target="_blank">X</a>
+      <a href="https://www.linkedin.com/in/francisco-acosta-a09a91227/" target="_blank">LinkedIn</a>
+      <a href="https://bsky.app/profile/franciscoacosta.bsky.social" target="_blank">Bluesky</a>
+    </div>
+  </div>
+</header>
+
+<hr class="ylrd-divider">
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about" class="section-impressionist imp-about">
+  <div class="section-inner fade-in">
+    <div class="section-line"><h2>About</h2></div>
+    <p>
+      I am a physics PhD candidate at UC Santa Barbara working at the intersection of deep learning
+      and computational neuroscience. I study how neural networks build internal representations
+      that support computation.
+    </p>
+    <p>
+      My research uses dynamical systems theory, group theory, and geometry to understand emergent
+      structure in deep learning systems. I am especially interested in how learned representations
+      are shaped by the interplay between task structure, network architecture, and learning dynamics.
+    </p>
+    <p>
+      Before UCSB, I earned my S.B. in Physics from MIT in 2021. During my PhD, I have also worked
+      with <a href="https://www.atmo.ai/" style="color:var(--accent);text-decoration:none;">Atmo</a>
+      as an AI Researcher building deep learning models for large-scale
+      atmospheric forecasting.
+    </p>
+  </div>
+</section>
+
+<!-- ==================== PUBLICATIONS ==================== -->
+<section id="publications" class="section-impressionist imp-pubs">
+  <div class="section-inner fade-in">
+    <div class="section-line"><h2>Publications</h2></div>
+
+    <div class="pub-category">Conference Publications</div>
+
+    <div class="pub">
+      <div class="pub-title">Sequential Group Composition: A Window into the Mechanics of Deep Learning</div>
+      <div class="pub-authors">Marchetti, G., Kunin, D., Myers, A., <strong>Acosta, F.</strong>, Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">ICML 2026</span>
+        <div class="pub-links"><a href="https://arxiv.org/abs/2602.03655">arXiv</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Global Distortions from Local Rewards: Neural Coding Strategies in Path-Integrating Neural Systems</div>
+      <div class="pub-authors"><strong>Acosta, F.</strong>, Dinc, F., Redman, W., Madhav, M., Klindt, D., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">NeurIPS 2024</span>
+        <div class="pub-links"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/b5cc526f12164b2144bb2e06f2e84864-Abstract-Conference.html">paper</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Not so Griddy: Internal Representations of RNNs Path Integrating More than One Agent</div>
+      <div class="pub-authors">Redman, W., <strong>Acosta, F.</strong>, Acosta-Mendoza, S., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">NeurIPS 2024</span>
+        <div class="pub-links"><a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/285b06e0dd856f20591b0a5beb954151-Abstract-Conference.html">paper</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Quantifying Extrinsic Curvature in Neural Manifolds</div>
+      <div class="pub-authors"><strong>Acosta, F.</strong>, Sanborn, S., Dao Duc, K., Madhav, M., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">CVPR Workshop 2023</span>
+        <div class="pub-links">
+          <a href="https://openaccess.thecvf.com/content/CVPR2023W/TAG-PRA/html/Acosta_Quantifying_Extrinsic_Curvature_in_Neural_Manifolds_CVPRW_2023_paper.html">paper</a>
+          <a href="https://github.com/bioshape-lab/neuralgeom">code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Relating Representational Geometry to Cortical Geometry in Visual Cortex</div>
+      <div class="pub-authors"><strong>Acosta, F.</strong>, Conwell, C., Klindt, D., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">NeurIPS Workshop 2023</span>
+        <div class="pub-links"><a href="https://openreview.net/forum?id=LhV3Ex8fky">paper</a></div>
+      </div>
+    </div>
+
+    <div class="pub-category">Conference Abstracts</div>
+
+    <div class="pub">
+      <div class="pub-title">Dimensionality of population-level latent mechanisms encoding spatial representations</div>
+      <div class="pub-authors">Delikkaya, N. E., Cimen, A., <strong>Acosta, F.</strong>, Myers, A., Alexander, A., Dinc, F., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">NeurIPS Workshop 2025</span>
+        <div class="pub-links"><a href="https://openreview.net/forum?id=H4BcVkmmL9">paper</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">A group theoretic perspective on path integration and the emergence of grid cells</div>
+      <div class="pub-authors">Kunin, D., Kymn, C., <strong>Acosta, F.</strong>, Marchetti, G., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">COSYNE 2026</span>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">The emergence of discrete grid cell modules from smooth gradients in the brain</div>
+      <div class="pub-authors">Khona, M., Chandra, S., <strong>Acosta, F.</strong>, Fiete, I.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">COSYNE 2021</span>
+      </div>
+    </div>
+
+    <div class="pub-category">Preprints &amp; In Preparation</div>
+
+    <div class="pub">
+      <div class="pub-title">The Timescale Matching Hypothesis in Task-Trained Recurrent Neural Networks</div>
+      <div class="pub-authors"><strong>Acosta, F.</strong>, Bertics, A., Dinc, F., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">Under Review, 2026</span>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">A Group-Theoretic Framework for Path Integration Predicts the Emergence of Grid Cells</div>
+      <div class="pub-authors">Kunin, D., Kymn, C., <strong>Acosta, F.</strong>, Marchetti, G., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">In Preparation, 2026</span>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Latent computing by biological neural networks: A dynamical systems framework</div>
+      <div class="pub-authors">Dinc, F., Blanco-Pozo, M., Klindt, D., <strong>Acosta, F.</strong>, Jiang, Y., Ebrahimi, S., Shai, A., Tanaka, H., Yuan, P., Schnitzer, M., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">Preprint, 2025</span>
+        <div class="pub-links"><a href="https://arxiv.org/abs/2502.14337">arXiv</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Identifying Interpretable Visual Features in Artificial and Biological Neural Systems</div>
+      <div class="pub-authors">Klindt, D., Sanborn, S., <strong>Acosta, F.</strong>, Poitevin, F., Miolane, N.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">In Preparation</span>
+        <div class="pub-links"><a href="https://arxiv.org/abs/2310.11431">arXiv</a></div>
+      </div>
+    </div>
+
+    <div class="pub">
+      <div class="pub-title">Dissecting the black box: Latent circuit theory of neural coding and dynamics in recurrent neural networks</div>
+      <div class="pub-authors">Dinc, F., <strong>Acosta, F.</strong>, Jiang, Y., Blanco-Pozo, M., Klindt, D., Ebrahimi, S., Yuan, P., Shai, A., Tanaka, H., Miolane, N., Schnitzer, M.</div>
+      <div class="pub-bottom">
+        <span class="pub-venue">In Preparation</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== SOFTWARE ==================== -->
+<section id="software" class="section-impressionist imp-software">
+  <div class="section-inner fade-in">
+    <div class="section-line"><h2>Software</h2></div>
+    <div class="sw-grid">
+      <div class="sw-card">
+        <h3>Geomstats</h3>
+        <p>A Python package for Riemannian geometry in machine learning. Contributor since v2.6.0.</p>
+        <a href="https://github.com/geomstats/geomstats">github.com/geomstats →</a>
+      </div>
+      <div class="sw-card">
+        <h3>Group AGF</h3>
+        <p>Research code for sequential group composition experiments, related to the ICML 2026 paper.</p>
+        <a href="https://github.com/geometric-intelligence/group-agf">github.com/geometric-intelligence/group-agf →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="ylrd-divider">
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <span>© 2026 Francisco Acosta · UCSB Physics</span>
+  <span>
+    <a href="mailto:facosta@ucsb.edu">facosta@ucsb.edu</a>
+  </span>
+</footer>
+
+</body>
+</html>

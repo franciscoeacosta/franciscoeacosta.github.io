@@ -1,0 +1,36 @@
+# Francisco Acosta
+
+> Physics PhD candidate at UC Santa Barbara studying the geometry, symmetry, and dynamics of representations learned by neural networks.
+
+Francisco Acosta is a physicist and computational neuroscientist at the Geometric Intelligence Lab (PI: Nina Miolane) in the Department of Electrical & Computer Engineering at UC Santa Barbara. He graduated from MIT in 2021 with an S.B. in Physics.
+
+## Research Focus
+
+His research combines differential geometry, group theory, and computational statistics to understand neural representations:
+
+1. **Riemannian geometry of neural representations** — quantifying the geometric structure (intrinsic and extrinsic curvature) of neural manifolds in both biological and artificial systems.
+2. **Task structure and RNN dynamics** — how task structure shapes the dynamics and learned representations of recurrent neural networks, including mechanisms of timescale learning.
+3. **Group theory in neural networks** — how neural networks learn and exploit group-theoretic structure inherent in their tasks, with applications to path integration and grid cell emergence.
+
+## Key Publications
+
+- Marchetti, G., Kunin, D., Myers, A., Acosta, F., Miolane, N. (2026). Sequential Group Composition: A Window into the Mechanics of Deep Learning. ICML.
+- Acosta, F., Bertics, A., Dinc, F., Miolane, N. (2026). The Timescale Matching Hypothesis in Task-Trained Recurrent Neural Networks. Under review.
+- Delikkaya, N. E., Cimen, A., Acosta, F., Myers, A., Alexander, A., Dinc, F., Miolane, N. (2025). Dimensionality of population-level latent mechanisms encoding spatial representations. NeurReps.
+- Acosta, F., Dinc, F., Redman, W., Madhav, M., Klindt, D., Miolane, N. (2024). Global Distortions from Local Rewards: Neural Coding Strategies in Path-Integrating Neural Systems. NeurIPS.
+- Redman, W., Acosta, F., Acosta-Mendoza, S., Miolane, N. (2024). Not so Griddy: Internal Representations of RNNs Path Integrating More than One Agent. NeurIPS.
+- Acosta, F., Sanborn, S., Dao Duc, K., Madhav, M., Miolane, N. (2023). Quantifying Extrinsic Curvature in Neural Manifolds. CVPR Workshop.
+- Acosta, F., Conwell, C., Klindt, D., Miolane, N. (2023). Relating Representational Geometry to Cortical Geometry in Visual Cortex. NeurIPS Workshop.
+
+## Software
+
+- Geomstats: contributor to the Python package for Riemannian geometry in ML (github.com/geomstats/geomstats)
+- Group AGF: research code for sequential group composition experiments related to the ICML 2026 paper (github.com/geometric-intelligence/group-agf)
+
+## Contact
+
+- Email: facosta@ucsb.edu
+- Lab: https://gi.ece.ucsb.edu
+- GitHub: https://github.com/franciscoeacosta
+- X/Twitter: https://x.com/hopfbifurcator
+- Bluesky: https://bsky.app/profile/franciscoacosta.bsky.social
