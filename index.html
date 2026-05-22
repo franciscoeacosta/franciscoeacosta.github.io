@@ -82,6 +82,20 @@
   --max-w-wide: 980px;
 }
 
+[data-theme="dark"] {
+  --bg: #18150f;
+  --surface: #201c15;
+  --surface-muted: #2a2419;
+  --text: #ede8df;
+  --text-secondary: #a89f93;
+  --text-tertiary: #6e6458;
+  --accent: #d4593a;
+  --accent-hover: #d4593a;
+  --accent-soft: rgba(212,89,58,0.15);
+  --rule: #302a21;
+  --card-border: #3a3228;
+}
+
 /* ============================================
    RESET & BASE
    ============================================ */
@@ -109,7 +123,24 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--rule);
+  transition: background 0.2s;
 }
+[data-theme="dark"] .nav-wrap {
+  background: rgba(24,21,15,0.92);
+}
+
+.theme-btn {
+  background: none;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px 11px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: border-color 0.2s, color 0.2s;
+  line-height: 1.6;
+}
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 nav {
   max-width: var(--max-w-wide);
   margin: 0 auto;
@@ -450,6 +481,7 @@ footer a:hover { color: var(--accent); }
     <a class="nav-link" href="#about">About</a>
     <a class="nav-link" href="#publications">Publications</a>
     <a class="nav-link" href="#software">Software</a>
+    <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">☀︎</button>
   </nav>
 </div>
 
@@ -459,8 +491,8 @@ footer a:hover { color: var(--accent); }
   <div class="hero-content">
     <h1>Francisco Acosta</h1>
     <p class="hero-tagline">
-      Physicist studying the <em>geometry, symmetry, and dynamics</em> of representations
-      learned by neural networks — at the
+      I'm a physicist studying the <em>geometry, symmetry, and dynamics</em> of representations
+      learned by neural networks @ the
       <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a>, UC Santa Barbara.
     </p>
     <p class="hero-affil">
@@ -663,5 +695,19 @@ footer a:hover { color: var(--accent); }
   </span>
 </footer>
 
+<script>
+(function() {
+  const btn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') { root.setAttribute('data-theme', 'dark'); btn.textContent = '☽'; }
+  btn.addEventListener('click', function() {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+    btn.textContent = dark ? '☀︎' : '☽';
+    localStorage.setItem('theme', dark ? 'light' : 'dark');
+  });
+})();
+</script>
 </body>
 </html>
