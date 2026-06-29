@@ -190,6 +190,7 @@ nav a.nav-link:hover { color: var(--accent); }
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  /* masks/sizing applied dynamically by JS based on HERO_CANVAS_STYLE */
 }
 .hero-photo, .hero-content { position: relative; z-index: 1; }
 .hero-photo {
@@ -713,11 +714,20 @@ footer a:hover { color: var(--accent); }
 
 <script>
 // ── Hero grid animation ──────────────────────────────────────────────────────
-// Set to false to disable entirely.
+// HERO_CANVAS_ENABLED : false to turn off entirely
+// HERO_CANVAS_MODE    : 'sparkle' | 'perlin'
+// HERO_CANVAS_STYLE   : 'A' full-width + frosted glass behind text
+//                       'B' gutters only (animation masked out of content area)
+//                       'C' full-width, low opacity everywhere
+//                       'D' full-width, no extra treatment
 const HERO_CANVAS_ENABLED = true;
+const HERO_CANVAS_MODE    = 'sparkle';
+const HERO_CANVAS_STYLE   = 'A';
 
 if (HERO_CANVAS_ENABLED) (function () {
-  const CELL = 10, GAP = 1, MOUSE_R = 7;
+  const SHAPE_SIZE = 6;
+  const SHAPE_TYPE = 'square';
+  const MOUSE_PX = 200;
 
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
@@ -750,14 +760,75 @@ if (HERO_CANVAS_ENABLED) (function () {
     );
   }
 
-  function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-    cols = Math.ceil(W / CELL) + 1;
-    rows = Math.ceil(H / CELL) + 1;
+  function hash21(x, y) {
+    const n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+    return n - Math.floor(n);
   }
 
   const hero = canvas.parentElement;
+
+  // ── Style modes ────────────────────────────────────────────────────────────
+  function applyStyle() {
+    const mobile = window.innerWidth <= 700;
+    const dark   = document.documentElement.getAttribute('data-theme') === 'dark';
+    const content = hero.querySelector('.hero-content');
+
+    // Reset
+    Object.assign(canvas.style, { left:'', right:'', transform:'', width:'100%',
+      opacity:'', webkitMaskImage:'none', maskImage:'none' });
+    hero.style.overflow = 'hidden';
+    if (content) Object.assign(content.style, { background:'', backdropFilter:'',
+      webkitBackdropFilter:'', borderRadius:'', padding:'' });
+
+    if (mobile) {
+      // All styles collapse to a top-fade on mobile
+      const m = 'linear-gradient(to bottom, black 0, black 150px, transparent 230px)';
+      canvas.style.webkitMaskImage = canvas.style.maskImage = m;
+      return;
+    }
+
+    // Desktop: stretch canvas to full viewport width
+    Object.assign(canvas.style, { left:'50%', right:'auto', transform:'translateX(-50%)', width:'100vw' });
+    hero.style.overflow = 'visible';
+
+    if (HERO_CANVAS_STYLE === 'A') {
+      // Frosted glass card behind text column
+      if (content) {
+        content.style.background            = dark ? 'rgba(24,21,15,0.75)' : 'rgba(251,250,246,0.75)';
+        content.style.backdropFilter        = 'blur(10px)';
+        content.style.webkitBackdropFilter  = 'blur(10px)';
+        content.style.borderRadius          = '8px';
+        content.style.padding               = '24px';
+      }
+    } else if (HERO_CANVAS_STYLE === 'B') {
+      // Visible only in side gutters — mask out the center content area
+      const m = 'linear-gradient(to right, black 0, black calc(50% - 510px), transparent calc(50% - 410px), transparent calc(50% + 410px), black calc(50% + 510px), black 100%)';
+      canvas.style.webkitMaskImage = canvas.style.maskImage = m;
+    } else if (HERO_CANVAS_STYLE === 'C') {
+      // Subtle ambient texture, very low opacity
+      canvas.style.opacity = '0.35';
+    }
+    // D: full-width, no extra treatment — animation fills hero edge-to-edge
+  }
+
+  // ── Resize ─────────────────────────────────────────────────────────────────
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = hero.offsetHeight;
+    const S = SHAPE_SIZE;
+    let cstep, rstep;
+    if      (SHAPE_TYPE === 'hex-flat')   { cstep = S * 1.5;          rstep = Math.sqrt(3) * S; }
+    else if (SHAPE_TYPE === 'square')     { cstep = S * 2;            rstep = S * 2; }
+    else if (SHAPE_TYPE === 'triangle')   { cstep = S;                rstep = Math.sqrt(3) * S; }
+    else                                  { cstep = Math.sqrt(3) * S; rstep = S * 1.5; }
+    cols = Math.ceil(W / cstep) + 4;
+    rows = Math.ceil(H / rstep) + 4;
+  }
+
+  // Re-apply frosted glass colour when theme toggles
+  new MutationObserver(applyStyle).observe(document.documentElement,
+    { attributes: true, attributeFilter: ['data-theme'] });
+
   hero.addEventListener('mousemove', e => {
     const r = canvas.getBoundingClientRect();
     mx = e.clientX - r.left;
@@ -766,38 +837,100 @@ if (HERO_CANVAS_ENABLED) (function () {
   hero.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
 
   function draw(ts) {
-    const t = ts * 0.0003;
+    const t = ts * 0.00045;
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     ctx.clearRect(0, 0, W, H);
-    const mcx = mx / CELL, mcy = my / CELL;
+    const S = SHAPE_SIZE;
+    const GAP = Math.max(1, S * 0.05);
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        let cx, cy;
+        if (SHAPE_TYPE === 'hex-pointy') {
+          const hw = Math.sqrt(3) * S;
+          cx = col * hw + (row % 2 ? hw / 2 : 0);
+          cy = row * S * 1.5 + S;
+        } else if (SHAPE_TYPE === 'hex-flat') {
+          const hh = Math.sqrt(3) * S;
+          cx = col * S * 1.5 + S;
+          cy = row * hh + (col % 2 ? hh / 2 : 0);
+        } else if (SHAPE_TYPE === 'square') {
+          cx = col * S * 2 + S;
+          cy = row * S * 2 + S;
+        } else { // triangle
+          const th = Math.sqrt(3) * S;
+          const up = (col + row) % 2 === 0;
+          cx = (col + 1) * S;
+          cy = up ? (row + 2 / 3) * th : (row + 1 / 3) * th;
+        }
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        // Three octaves of noise at different speeds and scales
-        let n = perlin(c * 0.10 + t,        r * 0.10 + t * 0.6)  * 0.55
-              + perlin(c * 0.22 + t * 1.5,  r * 0.22)             * 0.30
-              + perlin(c * 0.04,             r * 0.04 + t * 0.35)  * 0.15;
-        let v = Math.pow((n + 1) * 0.5, 1.6); // [−1,1] → [0,1], darken midtones
+        let n;
+        if (HERO_CANVAS_MODE === 'sparkle') {
+          const phase = hash21(col, row) * 6.2832;
+          const rate  = 0.3 + hash21(col + 73.9, row + 157.3) * 2.2;
+          n = Math.sin(phase + t * rate);
+        } else {
+          n = perlin(col * 0.10 + t,       row * 0.10 + t * 0.6)  * 0.55
+            + perlin(col * 0.22 + t * 1.5, row * 0.22)             * 0.30
+            + perlin(col * 0.04,            row * 0.04 + t * 0.35)  * 0.15;
+        }
+        let v = Math.pow((n + 1) * 0.5, 2.2);
 
-        // Mouse glow
-        const dx = c - mcx, dy = r - mcy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_R) v = Math.min(1, v + Math.pow(1 - dist / MOUSE_R, 2) * 0.85);
+        const dxp = cx - mx, dyp = cy - my;
+        const dist = Math.sqrt(dxp * dxp + dyp * dyp);
+        if (dist < MOUSE_PX) v = Math.min(1, v + Math.pow(1 - dist / MOUSE_PX, 2) * 0.25);
 
-        const a = dark ? v * 0.88 + 0.04 : v * 0.15;
-        const [cr, cg, cb] = dark ? [212, 89, 58] : [182, 58, 26]; // --accent per theme
-        ctx.fillStyle = `rgba(${v * cr | 0},${v * cg | 0},${v * cb | 0},${a})`;
-        ctx.fillRect(c * CELL, r * CELL, CELL - GAP, CELL - GAP);
+        const [bgR, bgG, bgB, acR, acG, acB] = dark
+          ? [24, 21, 15,   212, 89, 58]
+          : [251, 250, 246, 210, 80, 40];
+        ctx.fillStyle = `rgba(${bgR + v*(acR-bgR)|0},${bgG + v*(acG-bgG)|0},${bgB + v*(acB-bgB)|0},0.92)`;
+
+        ctx.beginPath();
+        if (SHAPE_TYPE === 'square') {
+          const h = S - GAP / 2;
+          ctx.rect(cx - h, cy - h, h * 2, h * 2);
+        } else if (SHAPE_TYPE === 'hex-pointy') {
+          const fr = S - GAP;
+          for (let i = 0; i < 6; i++) {
+            const a = Math.PI / 6 + Math.PI / 3 * i;
+            if (i === 0) ctx.moveTo(cx + fr * Math.cos(a), cy + fr * Math.sin(a));
+            else         ctx.lineTo(cx + fr * Math.cos(a), cy + fr * Math.sin(a));
+          }
+        } else if (SHAPE_TYPE === 'hex-flat') {
+          const fr = S - GAP;
+          for (let i = 0; i < 6; i++) {
+            const a = Math.PI / 3 * i;
+            if (i === 0) ctx.moveTo(cx + fr * Math.cos(a), cy + fr * Math.sin(a));
+            else         ctx.lineTo(cx + fr * Math.cos(a), cy + fr * Math.sin(a));
+          }
+        } else { // triangle
+          const th = Math.sqrt(3) * S;
+          const up = (col + row) % 2 === 0;
+          const vx = [col * S, (col + 2) * S, (col + 1) * S];
+          const vy = up ? [(row + 1) * th, (row + 1) * th, row * th]
+                        : [row * th, row * th, (row + 1) * th];
+          const circR = 2 / 3 * th;
+          const scale = Math.max(0, (circR - GAP * 2) / circR);
+          for (let i = 0; i < 3; i++) {
+            const px = cx + (vx[i] - cx) * scale;
+            const py = cy + (vy[i] - cy) * scale;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+        }
+        ctx.closePath();
+        ctx.fill();
       }
     }
     requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', resize);
+
+  window.addEventListener('resize', () => { applyStyle(); resize(); });
+  applyStyle();
   resize();
   requestAnimationFrame(draw);
 })();
 </script>
+
 
 <script>
 (function() {
