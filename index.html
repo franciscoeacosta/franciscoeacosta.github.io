@@ -180,7 +180,18 @@ nav a.nav-link:hover { color: var(--accent); }
   grid-template-columns: 176px 1fr;
   gap: 52px;
   align-items: start;
+  position: relative;
+  overflow: hidden;
 }
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-photo, .hero-content { position: relative; z-index: 1; }
 .hero-photo {
   width: 176px;
   height: 212px;
@@ -480,13 +491,14 @@ footer a:hover { color: var(--accent); }
     <a class="nav-name" href="#">F. Acosta</a>
     <a class="nav-link" href="#about">About</a>
     <a class="nav-link" href="#publications">Publications</a>
-    <a class="nav-link" href="#software">Software</a>
+    <a class="nav-link" href="#software">Software & Contributions</a>
     <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">dark</button>
   </nav>
 </div>
 
 <!-- ==================== HERO ==================== -->
 <header class="hero fade-in">
+  <canvas id="hero-canvas"></canvas>
   <img src="assets/headshot.jpg" alt="Francisco Acosta" class="hero-photo">
   <div class="hero-content">
     <h1>Francisco Acosta</h1>
@@ -673,7 +685,7 @@ footer a:hover { color: var(--accent); }
 <!-- ==================== SOFTWARE ==================== -->
 <section id="software" class="section-impressionist imp-software">
   <div class="section-inner fade-in">
-    <div class="section-line"><h2>Software</h2></div>
+    <div class="section-line"><h2>Software & Contributions</h2></div>
     <div class="sw-grid">
       <div class="sw-card">
         <h3>Geomstats</h3>
@@ -698,6 +710,94 @@ footer a:hover { color: var(--accent); }
     <a href="mailto:facosta@ucsb.edu">facosta@ucsb.edu</a>
   </span>
 </footer>
+
+<script>
+// ── Hero grid animation ──────────────────────────────────────────────────────
+// Set to false to disable entirely.
+const HERO_CANVAS_ENABLED = true;
+
+if (HERO_CANVAS_ENABLED) (function () {
+  const CELL = 10, GAP = 1, MOUSE_R = 7;
+
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, cols, rows, mx = -9999, my = -9999;
+
+  // Permutation table for Perlin noise
+  const perm = new Uint8Array(512);
+  const G = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+  (function () {
+    const p = new Uint8Array(256);
+    for (let i = 0; i < 256; i++) p[i] = i;
+    for (let i = 255; i > 0; i--) { const j = Math.random() * (i + 1) | 0; const t = p[i]; p[i] = p[j]; p[j] = t; }
+    perm.set(p); perm.set(p, 256);
+  })();
+
+  const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const dot2 = (g, x, y) => g[0] * x + g[1] * y;
+
+  function perlin(x, y) {
+    const X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+    x -= Math.floor(x); y -= Math.floor(y);
+    const u = fade(x), v = fade(y);
+    const a = perm[X] + Y, b = perm[X + 1] + Y;
+    return lerp(
+      lerp(dot2(G[perm[a] % 8], x, y),     dot2(G[perm[b] % 8], x - 1, y),     u),
+      lerp(dot2(G[perm[a+1] % 8], x, y-1), dot2(G[perm[b+1] % 8], x - 1, y-1), u),
+      v
+    );
+  }
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    cols = Math.ceil(W / CELL) + 1;
+    rows = Math.ceil(H / CELL) + 1;
+  }
+
+  const hero = canvas.parentElement;
+  hero.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+  });
+  hero.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
+
+  function draw(ts) {
+    const t = ts * 0.0003;
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    ctx.clearRect(0, 0, W, H);
+    const mcx = mx / CELL, mcy = my / CELL;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        // Three octaves of noise at different speeds and scales
+        let n = perlin(c * 0.10 + t,        r * 0.10 + t * 0.6)  * 0.55
+              + perlin(c * 0.22 + t * 1.5,  r * 0.22)             * 0.30
+              + perlin(c * 0.04,             r * 0.04 + t * 0.35)  * 0.15;
+        let v = Math.pow((n + 1) * 0.5, 1.6); // [−1,1] → [0,1], darken midtones
+
+        // Mouse glow
+        const dx = c - mcx, dy = r - mcy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_R) v = Math.min(1, v + Math.pow(1 - dist / MOUSE_R, 2) * 0.85);
+
+        const a = dark ? v * 0.88 + 0.04 : v * 0.15;
+        const [cr, cg, cb] = dark ? [212, 89, 58] : [182, 58, 26]; // --accent per theme
+        ctx.fillStyle = `rgba(${v * cr | 0},${v * cg | 0},${v * cb | 0},${a})`;
+        ctx.fillRect(c * CELL, r * CELL, CELL - GAP, CELL - GAP);
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+</script>
 
 <script>
 (function() {
