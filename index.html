@@ -190,6 +190,8 @@ nav a.nav-link:hover { color: var(--accent); }
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
   /* masks/sizing applied dynamically by JS based on HERO_CANVAS_STYLE */
 }
 .hero-photo, .hero-content { position: relative; z-index: 1; }
@@ -890,8 +892,8 @@ if (HERO_CANVAS_ENABLED) (function () {
 
         ctx.beginPath();
         if (SHAPE_TYPE === 'square') {
-          const h = S - GAP / 2;
-          ctx.rect(cx - h, cy - h, h * 2, h * 2);
+          const h = Math.floor(S - GAP / 2);
+          ctx.rect(Math.round(cx - h), Math.round(cy - h), h * 2, h * 2);
         } else if (SHAPE_TYPE === 'hex-pointy') {
           const fr = S - GAP;
           for (let i = 0; i < 6; i++) {
