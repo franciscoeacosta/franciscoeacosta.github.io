@@ -813,8 +813,12 @@ if (HERO_CANVAS_ENABLED) (function () {
 
   // ── Resize ─────────────────────────────────────────────────────────────────
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = hero.offsetHeight;
+    const dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth;
+    H = hero.offsetHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const S = SHAPE_SIZE;
     let cstep, rstep;
     if      (SHAPE_TYPE === 'hex-flat')   { cstep = S * 1.5;          rstep = Math.sqrt(3) * S; }
