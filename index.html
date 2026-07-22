@@ -63,9 +63,13 @@
 
 <style>
 /* ============================================
-   DESIGN SYSTEM
-   Warm paper, one restrained red accent.
+   DESIGN SYSTEM — PALETTE
+   Warm paper neutrals stay fixed; only the accent
+   swaps between palettes. To switch, comment out
+   the active block and uncomment another.
    ============================================ */
+
+/* --- Palette: Warm Paper + Red (original) ---
 :root {
   --bg: #fbfaf6;
   --surface: #fffefb;
@@ -92,6 +96,38 @@
   --accent: #d4593a;
   --accent-hover: #d4593a;
   --accent-soft: rgba(212,89,58,0.15);
+  --rule: #302a21;
+  --card-border: #3a3228;
+}
+--- end Warm Paper + Red */
+
+/* --- Palette: Matcha Green (active) --- */
+:root {
+  --bg: #fbfaf6;
+  --surface: #fffefb;
+  --surface-muted: #f5f1e8;
+  --text: #241f1b;
+  --text-secondary: #62584e;
+  --text-tertiary: #8a7f72;
+  --accent: #76a51d;
+  --accent-hover: #76a51d;
+  --accent-soft: rgba(118,165,29,0.12);
+  --rule: #ded6c8;
+  --card-border: #e8dfd2;
+  --max-w: 760px;
+  --max-w-wide: 980px;
+}
+
+[data-theme="dark"] {
+  --bg: #18150f;
+  --surface: #201c15;
+  --surface-muted: #2a2419;
+  --text: #ede8df;
+  --text-secondary: #a89f93;
+  --text-tertiary: #6e6458;
+  --accent: #91b74a;
+  --accent-hover: #91b74a;
+  --accent-soft: rgba(145,183,74,0.15);
   --rule: #302a21;
   --card-border: #3a3228;
 }
@@ -179,7 +215,7 @@ nav a.nav-link:hover { color: var(--accent); }
   display: grid;
   grid-template-columns: 176px 1fr;
   gap: 52px;
-  align-items: start;
+  align-items: stretch;
   position: relative;
   overflow: hidden;
 }
@@ -197,7 +233,7 @@ nav a.nav-link:hover { color: var(--accent); }
 .hero-photo, .hero-content { position: relative; z-index: 1; }
 .hero-photo {
   width: 176px;
-  height: 212px;
+  height: 100%;
   border-radius: 4px;
   object-fit: cover;
   object-position: 50% 18%;
@@ -448,6 +484,14 @@ footer a {
 footer a:hover { color: var(--accent); }
 
 /* ============================================
+   POLYHEDRA ROW
+   ============================================ */
+.polyhedra-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.polyhedron { opacity: 0.55; flex: none; }
+.polyhedron line { stroke: var(--accent); stroke-width: 1; }
+@media (prefers-reduced-motion: reduce) { .polyhedron { opacity: 0.4; } }
+
+/* ============================================
    ACCENT DIVIDER
    ============================================ */
 .ylrd-divider {
@@ -511,7 +555,7 @@ footer a:hover { color: var(--accent); }
       <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a>, UC Santa Barbara.
     </p>
     <p class="hero-affil">
-      MIT '21 · PhD Candidate in Physics @ UC Santa Barbara · Advisor: <a href="https://gi.ece.ucsb.edu" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
+      MIT '21 · PhD Candidate in Physics @ UC Santa Barbara · Advisor: <a href="https://www.ninamiolane.com/" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
     </p>
     <div class="hero-links">
       <a href="https://drive.google.com/file/d/1yDWaG1RjSoTxyVbj6_g1bWtIkAsUsHu9/view?usp=sharing" target="_blank">CV</a>
@@ -553,6 +597,7 @@ footer a:hover { color: var(--accent); }
     <p>
       Feel free to reach me at <a href="mailto:facosta@ucsb.edu" style="color:var(--accent);text-decoration:none;">facosta@ucsb.edu</a>.
     </p>
+    <div class="polyhedra-row" id="polyhedra-row" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -729,12 +774,11 @@ const HERO_CANVAS_STYLE   = 'A';
 if (HERO_CANVAS_ENABLED) (function () {
   const SHAPE_SIZE = 6;
   const SHAPE_TYPE = 'square';
-  const MOUSE_PX = 200;
 
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let W, H, cols, rows, mx = -9999, my = -9999;
+  let W, H, cols, rows;
 
   // Permutation table for Perlin noise
   const perm = new Uint8Array(512);
@@ -835,13 +879,6 @@ if (HERO_CANVAS_ENABLED) (function () {
   new MutationObserver(applyStyle).observe(document.documentElement,
     { attributes: true, attributeFilter: ['data-theme'] });
 
-  hero.addEventListener('mousemove', e => {
-    const r = canvas.getBoundingClientRect();
-    mx = e.clientX - r.left;
-    my = e.clientY - r.top;
-  });
-  hero.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
-
   function draw(ts) {
     const t = ts * 0.00045;
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -881,13 +918,11 @@ if (HERO_CANVAS_ENABLED) (function () {
         }
         let v = Math.pow((n + 1) * 0.5, 2.2);
 
-        const dxp = cx - mx, dyp = cy - my;
-        const dist = Math.sqrt(dxp * dxp + dyp * dyp);
-        if (dist < MOUSE_PX) v = Math.min(1, v + Math.pow(1 - dist / MOUSE_PX, 2) * 0.25);
-
+        // Accent RGB must be kept in sync with --accent above (canvas can't read CSS vars per-pixel).
+        // Warm Paper + Red:  dark [24,21,15, 212,89,58]   light [251,250,246, 210,80,40]
         const [bgR, bgG, bgB, acR, acG, acB] = dark
-          ? [24, 21, 15,   212, 89, 58]
-          : [251, 250, 246, 210, 80, 40];
+          ? [24, 21, 15,   145, 183, 74]
+          : [251, 250, 246, 118, 165, 29];
         ctx.fillStyle = `rgba(${bgR + v*(acR-bgR)|0},${bgG + v*(acG-bgG)|0},${bgB + v*(acB-bgB)|0},0.92)`;
 
         ctx.beginPath();
@@ -937,6 +972,106 @@ if (HERO_CANVAS_ENABLED) (function () {
 })();
 </script>
 
+<script>
+// ── Rotating Platonic solids ─────────────────────────────────────────────────
+// Vanilla JS/SVG wireframes: project each solid's vertices to 2D every frame.
+// No canvas, no libraries — just <line> elements we move. Edges are derived
+// from nearest-neighbor vertex distance, so the same code handles all five.
+(function () {
+  const PHI = (1 + Math.sqrt(5)) / 2;
+  function cartesian(xs, ys, zs) {
+    const out = [];
+    for (const x of xs) for (const y of ys) for (const z of zs) out.push([x, y, z]);
+    return out;
+  }
+  const PLATONIC_SOLIDS = [
+    { name: 'tetrahedron', verts: [[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]] },
+    { name: 'cube', verts: cartesian([-1,1],[-1,1],[-1,1]) },
+    { name: 'octahedron', verts: [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]] },
+    { name: 'icosahedron', verts: [
+      [0,1,PHI],[0,1,-PHI],[0,-1,PHI],[0,-1,-PHI],
+      [1,PHI,0],[1,-PHI,0],[-1,PHI,0],[-1,-PHI,0],
+      [PHI,0,1],[PHI,0,-1],[-PHI,0,1],[-PHI,0,-1],
+    ]},
+    { name: 'dodecahedron', verts: [
+      ...cartesian([-1,1],[-1,1],[-1,1]),
+      ...cartesian([0],[-1/PHI,1/PHI],[-PHI,PHI]),
+      ...cartesian([-1/PHI,1/PHI],[-PHI,PHI],[0]),
+      ...cartesian([-PHI,PHI],[0],[-1/PHI,1/PHI]),
+    ]},
+  ];
+
+  function buildEdges(rawVerts) {
+    const dist = (a, b) => Math.hypot(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
+    const verts = rawVerts.map(([x,y,z]) => {
+      const len = Math.hypot(x, y, z);
+      return [x/len, y/len, z/len];
+    });
+    let minDist = Infinity;
+    for (let i=0;i<verts.length;i++) for (let j=i+1;j<verts.length;j++)
+      minDist = Math.min(minDist, dist(verts[i], verts[j]));
+    const edges = [];
+    for (let i=0;i<verts.length;i++) for (let j=i+1;j<verts.length;j++)
+      if (Math.abs(dist(verts[i], verts[j]) - minDist) < 0.001) edges.push([i, j]);
+    return { verts, edges };
+  }
+
+  function initPolyhedra() {
+    const container = document.getElementById('polyhedra-row');
+    if (!container) return;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SIZE = 64, R = 24, D = 3.4, CENTER = 32;
+
+    const instances = PLATONIC_SOLIDS.map((solid, idx) => {
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('class', 'polyhedron');
+      svg.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
+      svg.setAttribute('width', SIZE);
+      svg.setAttribute('height', SIZE);
+      container.appendChild(svg);
+      const { verts, edges } = buildEdges(solid.verts);
+      const lines = edges.map(() => svg.appendChild(document.createElementNS(svgNS, 'line')));
+      return {
+        verts, edges, lines,
+        angleX: 0.3 + idx * 0.5, angleY: idx * 0.7,
+        speedX: 0.0016 + idx * 0.0003, speedY: 0.0032 + idx * 0.0005,
+      };
+    });
+
+    function renderOne(inst) {
+      const cosY = Math.cos(inst.angleY), sinY = Math.sin(inst.angleY);
+      const cosX = Math.cos(inst.angleX), sinX = Math.sin(inst.angleX);
+      const projected = inst.verts.map(([x,y,z]) => {
+        const x1 = x*cosY + z*sinY;
+        const z1 = -x*sinY + z*cosY;
+        const y1 = y*cosX - z1*sinX;
+        const z2 = y*sinX + z1*cosX;
+        const scale = D / (D + z2);
+        return [CENTER + x1*R*scale, CENTER + y1*R*scale];
+      });
+      inst.edges.forEach(([i, j], idx) => {
+        inst.lines[idx].setAttribute('x1', projected[i][0]);
+        inst.lines[idx].setAttribute('y1', projected[i][1]);
+        inst.lines[idx].setAttribute('x2', projected[j][0]);
+        inst.lines[idx].setAttribute('y2', projected[j][1]);
+      });
+    }
+
+    if (reduceMotion) { instances.forEach(renderOne); return; }
+    (function tick() {
+      instances.forEach(inst => {
+        inst.angleY += inst.speedY;
+        inst.angleX += inst.speedX;
+        renderOne(inst);
+      });
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  initPolyhedra();
+})();
+</script>
 
 <script>
 (function() {
