@@ -213,8 +213,8 @@ nav a.nav-link:hover { color: var(--accent); }
   margin: 0 auto;
   padding: 82px 32px 70px;
   display: grid;
-  grid-template-columns: 176px 1fr;
-  gap: 52px;
+  grid-template-columns: auto 176px 1fr;
+  gap: 30px;
   align-items: stretch;
   position: relative;
   overflow: hidden;
@@ -230,7 +230,7 @@ nav a.nav-link:hover { color: var(--accent); }
   image-rendering: -moz-crisp-edges;
   /* masks/sizing applied dynamically by JS based on HERO_CANVAS_STYLE */
 }
-.hero-photo, .hero-content { position: relative; z-index: 1; }
+.hero-photo, .hero-content, .hero .polyhedra-row { position: relative; z-index: 1; }
 .hero-photo {
   width: 176px;
   height: 100%;
@@ -486,7 +486,7 @@ footer a:hover { color: var(--accent); }
 /* ============================================
    POLYHEDRA ROW
    ============================================ */
-.polyhedra-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.polyhedra-row { display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; }
 .polyhedron { opacity: 0.55; flex: none; }
 .polyhedron line { stroke: var(--accent); stroke-width: 1; }
 @media (prefers-reduced-motion: reduce) { .polyhedron { opacity: 0.4; } }
@@ -521,6 +521,7 @@ footer a:hover { color: var(--accent); }
   }
   .hero-photo { width: 136px; height: 164px; font-size: 44px; }
   .hero-content h1 { font-size: 34px; }
+  .hero .polyhedra-row { display: none; }
   section { padding: 48px 20px; }
   nav { padding: 14px 20px; gap: 10px 16px; }
   nav .nav-name { flex-basis: 100%; }
@@ -546,6 +547,7 @@ footer a:hover { color: var(--accent); }
 <!-- ==================== HERO ==================== -->
 <header class="hero fade-in">
   <canvas id="hero-canvas"></canvas>
+  <div class="polyhedra-row" id="polyhedra-row" aria-hidden="true"></div>
   <img src="assets/headshot.jpg" alt="Francisco Acosta" class="hero-photo">
   <div class="hero-content">
     <h1>Francisco Acosta</h1>
@@ -553,6 +555,9 @@ footer a:hover { color: var(--accent); }
       I'm a physicist studying the <em>geometry, symmetry, and dynamics</em> of representations
       learned by neural networks @ the
       <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a>, UC Santa Barbara.
+    </p>
+    <p class="hero-tagline">
+      In fall 2026, I will be in the BCI Lab at <a href="https://www.science.xyz/">Science Corp</a> working on the neural code.
     </p>
     <p class="hero-affil">
       MIT '21 · PhD Candidate in Physics @ UC Santa Barbara · Advisor: <a href="https://www.ninamiolane.com/" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
@@ -595,12 +600,8 @@ footer a:hover { color: var(--accent); }
       the NeurIPS Workshop on Symmetry and Geometry in Neural Representations.
     </p>
     <p>
-      In fall 2026, I will be in the BCI Lab at <a href="https://www.science.xyz/" style="color:var(--accent);text-decoration:none;">Science Corp</a> working on the neural code.
-    </p>
-    <p>
       Feel free to reach me at <a href="mailto:facosta@ucsb.edu" style="color:var(--accent);text-decoration:none;">facosta@ucsb.edu</a>.
     </p>
-    <div class="polyhedra-row" id="polyhedra-row" aria-hidden="true"></div>
   </div>
 </section>
 
@@ -770,7 +771,7 @@ footer a:hover { color: var(--accent); }
 //                       'B' gutters only (animation masked out of content area)
 //                       'C' full-width, low opacity everywhere
 //                       'D' full-width, no extra treatment
-const HERO_CANVAS_ENABLED = true;
+const HERO_CANVAS_ENABLED = false;
 const HERO_CANVAS_MODE    = 'sparkle';
 const HERO_CANVAS_STYLE   = 'A';
 
@@ -1024,7 +1025,7 @@ if (HERO_CANVAS_ENABLED) (function () {
     if (!container) return;
     const svgNS = 'http://www.w3.org/2000/svg';
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const SIZE = 64, R = 24, D = 3.4, CENTER = 32;
+    const SIZE = 56, R = 21, D = 3.4, CENTER = 28;
 
     const instances = PLATONIC_SOLIDS.map((solid, idx) => {
       const svg = document.createElementNS(svgNS, 'svg');
