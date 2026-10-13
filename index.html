@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Francisco Acosta — AI Researcher</title>
-<meta name="description" content="Francisco Acosta is a physics PhD candidate at UC Santa Barbara studying the geometry, symmetry, and dynamics of representations learned by neural networks.">
+<title>Francisco Acosta</title>
+<meta name="description" content="Francisco Acosta is a physics PhD candidate at UC Santa Barbara studying the geometry and dynamics of neural network representations.">
 <meta name="keywords" content="Francisco Acosta, computational neuroscience, neural manifolds, Riemannian geometry, differential geometry, UCSB, machine learning, NeurIPS, grid cells, recurrent neural networks">
 
 <!-- Open Graph -->
-<meta property="og:title" content="Francisco Acosta — AI Researcher">
-<meta property="og:description" content="Studying the geometry, symmetry, and dynamics of representations learned by neural networks.">
+<meta property="og:title" content="Francisco Acosta">
+<meta property="og:description" content="Studying the geometry and dynamics of neural network representations.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://franciscoeacosta.github.io">
 
@@ -167,16 +167,17 @@ body {
 
 .theme-btn {
   background: none;
-  border: 1px solid var(--card-border);
-  border-radius: 999px;
-  padding: 4px 11px;
-  font-size: 13px;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  color: var(--text-secondary);
-  transition: border-color 0.2s, color 0.2s;
-  line-height: 1.6;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
 }
-.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+.theme-btn:hover { color: var(--accent); }
 nav {
   max-width: var(--max-w-wide);
   margin: 0 auto;
@@ -276,26 +277,19 @@ nav a.nav-link:hover { color: var(--accent); }
 
 .hero-links {
   display: flex;
-  gap: 8px;
-  margin-top: 24px;
+  gap: 6px 22px;
+  margin-top: 22px;
   flex-wrap: wrap;
 }
 .hero-links a {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--accent);
   text-decoration: none;
-  background: transparent;
-  border: 1px solid var(--card-border);
-  padding: 6px 14px;
-  border-radius: 999px;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.2s;
 }
-.hero-links a:hover {
-  background: var(--surface);
-  border-color: var(--accent);
-  color: var(--accent-hover);
-}
+.hero-links a:hover { border-bottom-color: var(--accent); }
 
 /* ============================================
    SECTIONS — shared layout
@@ -539,8 +533,8 @@ footer a:hover { color: var(--accent); }
     <a class="nav-name" href="#">F. Acosta</a>
     <a class="nav-link" href="#about">About</a>
     <a class="nav-link" href="#publications">Publications</a>
-    <a class="nav-link" href="#software">Software & Contributions</a>
-    <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">dark</button>
+    <a class="nav-link" href="#software">Software</a>
+    <button class="theme-btn" id="theme-toggle" aria-label="Toggle light mode">light</button>
   </nav>
 </div>
 
@@ -552,15 +546,16 @@ footer a:hover { color: var(--accent); }
   <div class="hero-content">
     <h1>Francisco Acosta</h1>
     <p class="hero-tagline">
-      I'm a physicist studying the <em>geometry, symmetry, and dynamics</em> of representations
-      learned by neural networks @ the
-      <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a>, UC Santa Barbara.
+      I'm a physicist working toward a <em>physics of intelligence</em> @ the
+      <a href="https://gi.ece.ucsb.edu">Geometric Intelligence Lab</a> at UC Santa Barbara.
+      I'm especially interested in the geometry of representations inside neural networks,
+      and the dynamics of the learning process.
     </p>
     <p class="hero-tagline">
-      In fall 2026, I will be in the BCI Lab at <a href="https://www.science.xyz/">Science Corp</a> working on the neural code.
+      In fall 2026, I am a researcher with the brain-computer interface (BCI) team at <a href="https://www.science.xyz/">Science Corporation</a>.
     </p>
     <p class="hero-affil">
-      MIT '21 · PhD Candidate in Physics @ UC Santa Barbara · Advisor: <a href="https://www.ninamiolane.com/" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
+      MIT '21 | PhD Candidate in Physics @ UC Santa Barbara | Advisor: <a href="https://www.ninamiolane.com/" style="color:var(--accent);text-decoration:none;">Prof. Nina Miolane</a>
     </p>
     <div class="hero-links">
       <a href="https://drive.google.com/file/d/1yDWaG1RjSoTxyVbj6_g1bWtIkAsUsHu9/view?usp=sharing" target="_blank">CV</a>
@@ -585,15 +580,16 @@ footer a:hover { color: var(--accent); }
       that support computation.
     </p>
     <p>
-      My research uses dynamical systems theory, group theory, and geometry to understand emergent
+      In my research I use dynamical systems theory, group theory, and geometry to understand emergent
       structure in deep learning systems. I am especially interested in how learned representations
       are shaped by the interplay between task structure, network architecture, and learning dynamics.
     </p>
     <p>
-      Before UCSB, I earned my S.B. in Physics from MIT in 2021. During my PhD, I have also worked
+      Prior to UCSB, I earned my S.B. in Physics from MIT in 2021. During my PhD, I have worked
       with <a href="https://www.atmo.ai/" style="color:var(--accent);text-decoration:none;">Atmo</a>
-      as an AI Researcher building deep learning models for large-scale
-      atmospheric forecasting.
+      as an AI researcher building deep learning models for large-scale
+      atmospheric forecasting. I'm currently doing research on brain-computer interfaces at
+      <a href="https://www.science.xyz/" style="color:var(--accent);text-decoration:none;">Science Corporation</a>.
     </p>
     <p>
       I also help organize <a href="https://www.neurreps.org/" style="color:var(--accent);text-decoration:none;">NeurReps</a>,
@@ -687,21 +683,14 @@ footer a:hover { color: var(--accent); }
       </div>
     </div>
 
-    <div class="pub-category">Preprints &amp; In Preparation</div>
+    <div class="pub-category">Preprints</div>
 
     <div class="pub">
-      <div class="pub-title">The Timescale Matching Hypothesis in Task-Trained Recurrent Neural Networks</div>
-      <div class="pub-authors"><strong>Acosta, F.</strong>, Bertics, A., Dinc, F., Miolane, N.</div>
+      <div class="pub-title">A geometric and dynamical theory of latent computations in biological neural networks</div>
+      <div class="pub-authors">Dinc, F., Blanco-Pozo, M., Klindt, D., <strong>Acosta, F.</strong>, Sylber, C., Jiang, Y., Ebrahimi, S., Shai, A., Tanaka, H., Yuan, P., Miolane, N., Schnitzer, M. J.</div>
       <div class="pub-bottom">
-        <span class="pub-venue">Under Review, 2026</span>
-      </div>
-    </div>
-
-    <div class="pub">
-      <div class="pub-title">A Group-Theoretic Framework for Path Integration Predicts the Emergence of Grid Cells</div>
-      <div class="pub-authors">Kunin, D., Kymn, C., <strong>Acosta, F.</strong>, Marchetti, G., Miolane, N.</div>
-      <div class="pub-bottom">
-        <span class="pub-venue">In Preparation, 2026</span>
+        <span class="pub-venue">Preprint, 2026</span>
+        <div class="pub-links"><a href="https://doi.org/10.64898/2026.07.10.737763">bioRxiv</a></div>
       </div>
     </div>
 
@@ -718,16 +707,8 @@ footer a:hover { color: var(--accent); }
       <div class="pub-title">Identifying Interpretable Visual Features in Artificial and Biological Neural Systems</div>
       <div class="pub-authors">Klindt, D., Sanborn, S., <strong>Acosta, F.</strong>, Poitevin, F., Miolane, N.</div>
       <div class="pub-bottom">
-        <span class="pub-venue">In Preparation</span>
+        <span class="pub-venue">Preprint, 2023</span>
         <div class="pub-links"><a href="https://arxiv.org/abs/2310.11431">arXiv</a></div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <div class="pub-title">Dissecting the black box: Latent circuit theory of neural coding and dynamics in recurrent neural networks</div>
-      <div class="pub-authors">Dinc, F., <strong>Acosta, F.</strong>, Jiang, Y., Blanco-Pozo, M., Klindt, D., Ebrahimi, S., Yuan, P., Shai, A., Tanaka, H., Miolane, N., Schnitzer, M.</div>
-      <div class="pub-bottom">
-        <span class="pub-venue">In Preparation</span>
       </div>
     </div>
 
@@ -737,7 +718,7 @@ footer a:hover { color: var(--accent); }
 <!-- ==================== SOFTWARE ==================== -->
 <section id="software" class="section-impressionist imp-software">
   <div class="section-inner fade-in">
-    <div class="section-line"><h2>Software & Contributions</h2></div>
+    <div class="section-line"><h2>Software</h2></div>
     <div class="sw-grid">
       <div class="sw-card">
         <h3>Geomstats</h3>
@@ -757,7 +738,7 @@ footer a:hover { color: var(--accent); }
 
 <!-- ==================== FOOTER ==================== -->
 <footer>
-  <span>© 2026 Francisco Acosta · UCSB Physics</span>
+  <span>© 2026 Francisco Acosta | UCSB Physics</span>
   <span>
     <a href="mailto:facosta@ucsb.edu">facosta@ucsb.edu</a>
   </span>
@@ -1082,7 +1063,7 @@ if (HERO_CANVAS_ENABLED) (function () {
   const btn = document.getElementById('theme-toggle');
   const root = document.documentElement;
   const saved = localStorage.getItem('theme');
-  if (saved === 'dark') { root.setAttribute('data-theme', 'dark'); btn.textContent = 'light'; }
+  if (saved === 'light') { root.setAttribute('data-theme', 'light'); btn.textContent = 'dark'; }
   btn.addEventListener('click', function() {
     const dark = root.getAttribute('data-theme') === 'dark';
     root.setAttribute('data-theme', dark ? 'light' : 'dark');

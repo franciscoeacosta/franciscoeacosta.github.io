@@ -1,6 +1,6 @@
 # Francisco Acosta
 
-> Physics PhD candidate at UC Santa Barbara studying the geometry, symmetry, and dynamics of representations learned by neural networks.
+> Physics PhD candidate at UC Santa Barbara studying the geometry and dynamics of neural network representations.
 
 Francisco Acosta is a physicist and computational neuroscientist at the Geometric Intelligence Lab (PI: Nina Miolane) in the Department of Electrical & Computer Engineering at UC Santa Barbara. He graduated from MIT in 2021 with an S.B. in Physics.
 
@@ -15,7 +15,6 @@ His research combines differential geometry, group theory, and computational sta
 ## Key Publications
 
 - Marchetti, G., Kunin, D., Myers, A., Acosta, F., Miolane, N. (2026). Sequential Group Composition: A Window into the Mechanics of Deep Learning. ICML.
-- Acosta, F., Bertics, A., Dinc, F., Miolane, N. (2026). The Timescale Matching Hypothesis in Task-Trained Recurrent Neural Networks. Under review.
 - Delikkaya, N. E., Cimen, A., Acosta, F., Myers, A., Alexander, A., Dinc, F., Miolane, N. (2025). Dimensionality of population-level latent mechanisms encoding spatial representations. NeurReps.
 - Acosta, F., Dinc, F., Redman, W., Madhav, M., Klindt, D., Miolane, N. (2024). Global Distortions from Local Rewards: Neural Coding Strategies in Path-Integrating Neural Systems. NeurIPS.
 - Redman, W., Acosta, F., Acosta-Mendoza, S., Miolane, N. (2024). Not so Griddy: Internal Representations of RNNs Path Integrating More than One Agent. NeurIPS.
